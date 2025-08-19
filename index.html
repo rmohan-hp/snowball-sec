@@ -1,0 +1,307 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HPE NIS 2 Incident Management & Response Framework</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f0f4f8; /* A light, neutral background */
+            color: #2d3748; /* A dark, readable text color */
+        }
+        .chart-container {
+            position: relative;
+            width: 100%;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+            height: 300px;
+            max-height: 400px;
+        }
+        @media (min-width: 768px) {
+            .chart-container {
+                height: 350px;
+            }
+        }
+        .flowchart-step {
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        .flowchart-step:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+        }
+        .arrow {
+            color: #06B6D4;
+        }
+        .nav-link {
+            transition: color 0.3s ease, transform 0.3s ease;
+        }
+        .nav-link:hover {
+            color: #1a4f72;
+            transform: scale(1.05);
+        }
+    </style>
+</head>
+<body class="bg-gray-50 text-gray-800 antialiased">
+
+    <div class="container mx-auto p-4 md:p-8 max-w-5xl">
+
+        <header class="text-center mb-12">
+            <h1 class="text-4xl md:text-5xl font-bold text-[#0E7490] mb-4">HPE Incident Management & Response Framework</h1>
+            <p class="text-lg text-gray-600 max-w-3xl mx-auto">A visual guide to navigating the NIS 2 Directive and the operational flow for incident response.</p>
+        </header>
+        
+        <nav class="flex justify-center mb-10">
+            <a href="ir.html" class="nav-link px-4 py-2 text-lg font-semibold text-[#0E7490] border-b-2 border-transparent hover:border-[#0E7490]">View Detailed IR Workflow &rarr;</a>
+        </nav>
+
+        <main>
+            <section id="nis2-challenge" class="mb-16">
+                <h2 class="text-3xl font-bold text-center mb-8 text-[#0E7490]">The NIS 2 Directive Challenge</h2>
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                    <div class="bg-white rounded-lg shadow-md p-6">
+                        <h3 class="text-xl font-semibold mb-4 text-[#0891B2]">Strict Reporting Timelines</h3>
+                        <p class="text-gray-600 mb-6">NIS 2 imposes a multi-stage reporting process with tight deadlines, demanding rapid detection and assessment.</p>
+                        <div class="space-y-4">
+                            <div class="flex items-center">
+                                <div class="bg-[#67E8F9] text-[#164E63] rounded-full h-10 w-10 flex items-center justify-center font-bold text-lg">24h</div>
+                                <p class="ml-4 font-medium">Initial "early warning" notification.</p>
+                            </div>
+                            <div class="flex items-center">
+                                <div class="bg-[#22D3EE] text-[#164E63] rounded-full h-10 w-10 flex items-center justify-center font-bold text-lg">72h</div>
+                                <p class="ml-4 font-medium">Detailed follow-up and impact assessment.</p>
+                            </div>
+                            <div class="flex items-center">
+                                <div class="bg-[#06B6D4] text-white rounded-full h-10 w-10 flex items-center justify-center font-bold text-lg">1m</div>
+                                <p class="ml-4 font-medium">Comprehensive final report.</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="bg-white rounded-lg shadow-md p-6 text-center flex flex-col justify-center">
+                        <h3 class="text-xl font-semibold mb-4 text-[#0891B2]">Significant Penalties</h3>
+                        <p class="text-gray-600 mb-4">Non-compliance carries substantial financial risks for essential entities.</p>
+                        <div class="text-5xl font-bold text-[#0E7490]">€10M</div>
+                        <p class="text-gray-600 mt-2">or 2% of global turnover, whichever is higher.</p>
+                    </div>
+                    <div class="bg-white rounded-lg shadow-md p-6">
+                        <h3 class="text-xl font-semibold mb-4 text-[#0891B2]">Corporate Accountability</h3>
+                        <p class="text-gray-600">The directive places direct responsibility on senior management for overseeing and implementing cybersecurity measures, with potential personal liability for non-compliance.</p>
+                    </div>
+                </div>
+            </section>
+
+            <section id="iaas-model" class="mb-16">
+                <h2 class="text-3xl font-bold text-center mb-8 text-[#0E7490]">IaaS Shared Responsibility Model</h2>
+                <div class="bg-white rounded-lg shadow-md p-6 grid grid-cols-1 md:grid-cols-2 gap-8 items-center">
+                    <div>
+                        <h3 class="text-xl font-semibold mb-4 text-[#0891B2]">Dividing Security Duties</h3>
+                        <p class="text-gray-600">In an IaaS model, security is a partnership. The cloud provider secures the underlying infrastructure, while the customer is responsible for everything they build upon it. This distinction is critical for defining the scope of incident response.</p>
+                    </div>
+                    <div class="chart-container h-64 md:h-80">
+                        <canvas id="sharedResponsibilityChart"></canvas>
+                    </div>
+                </div>
+            </section>
+
+            <section id="ir-framework" class="mb-16">
+                <h2 class="text-3xl font-bold text-center mb-8 text-[#0E7490]">The NIST Incident Response Lifecycle</h2>
+                <p class="text-center text-gray-600 max-w-2xl mx-auto mb-10">A structured, four-phase approach ensures a consistent, effective, and repeatable process for handling cybersecurity incidents from start to finish.</p>
+                <div class="flex flex-col md:flex-row items-center justify-center space-y-4 md:space-y-0 md:space-x-4">
+                    <div class="flowchart-step bg-white rounded-lg shadow-md p-6 text-center w-full md:w-1/4">
+                        <div class="text-3xl mb-2">🛡️</div>
+                        <h3 class="font-semibold text-lg text-[#0891B2]">Preparation</h3>
+                        <p class="text-sm text-gray-600">Establish policies, tools, and training before an incident occurs.</p>
+                    </div>
+                    <div class="text-4xl arrow hidden md:block">&rarr;</div>
+                    <div class="text-4xl arrow md:hidden">&darr;</div>
+                    <div class="flowchart-step bg-white rounded-lg shadow-md p-6 text-center w-full md:w-1/4">
+                         <div class="text-3xl mb-2">🔎</div>
+                        <h3 class="font-semibold text-lg text-[#0891B2]">Detection & Analysis</h3>
+                        <p class="text-sm text-gray-600">Identify and validate incidents through continuous monitoring.</p>
+                    </div>
+                    <div class="text-4xl arrow hidden md:block">&rarr;</div>
+                     <div class="text-4xl arrow md:hidden">&darr;</div>
+                    <div class="flowchart-step bg-white rounded-lg shadow-md p-6 text-center w-full md:w-1/4">
+                         <div class="text-3xl mb-2">⚙️</div>
+                        <h3 class="font-semibold text-lg text-[#0891B2]">Containment, Eradication & Recovery</h3>
+                        <p class="text-sm text-gray-600">Limit impact, remove the threat, and restore systems securely.</p>
+                    </div>
+                    <div class="text-4xl arrow hidden md:block">&rarr;</div>
+                     <div class="text-4xl arrow md:hidden">&darr;</div>
+                    <div class="flowchart-step bg-white rounded-lg shadow-md p-6 text-center w-full md:w-1/4">
+                         <div class="text-3xl mb-2">📈</div>
+                        <h3 class="font-semibold text-lg text-[#0891B2]">Post-Incident Activity</h3>
+                        <p class="text-sm text-gray-600">Learn from incidents to improve future resilience.</p>
+                    </div>
+                </div>
+            </section>
+
+            <section id="tech-stack" class="mb-16">
+                <h2 class="text-3xl font-bold text-center mb-8 text-[#0E7490]">Technology Stack Integration</h2>
+                <p class="text-center text-gray-600 max-w-2xl mx-auto mb-10">The existing security stack provides a powerful, integrated ecosystem for managing the entire incident lifecycle, from proactive defense to post-incident analysis.</p>
+                <div class="bg-white rounded-lg shadow-md p-6">
+                    <div class="chart-container h-96 md:h-[500px] max-h-[500px]">
+                        <canvas id="techStackChart"></canvas>
+                    </div>
+                </div>
+            </section>
+
+            <section id="zero-trust" class="mb-16">
+                <h2 class="text-3xl font-bold text-center mb-8 text-[#0E7490]">Foundation: Zero Trust Principles</h2>
+                 <div class="bg-white rounded-lg shadow-md p-8 grid grid-cols-1 md:grid-cols-2 gap-8 items-center">
+                    <div>
+                        <h3 class="text-xl font-semibold mb-4 text-[#0891B2]">Never Trust, Always Verify</h3>
+                        <p class="text-gray-600">Zero Trust acts as a proactive containment strategy. By assuming a breach is always possible, it enforces strict access controls, micro-segmentation, and continuous verification. This limits an attacker's ability to move laterally, significantly reducing the potential blast radius of an incident before it's even detected.</p>
+                    </div>
+                    <div class="flex items-center justify-center space-x-4 p-4 rounded-lg bg-cyan-50">
+                        <div class="text-center">
+                            <div class="text-4xl">👤</div>
+                            <p class="font-semibold">User</p>
+                        </div>
+                        <div class="text-4xl font-bold text-cyan-500">&rarr;</div>
+                        <div class="text-center p-4 border-2 border-dashed border-cyan-400 rounded-lg">
+                             <div class="text-4xl">🔐</div>
+                            <p class="font-semibold">Verify</p>
+                        </div>
+                        <div class="text-4xl font-bold text-cyan-500">&rarr;</div>
+                        <div class="text-center">
+                             <div class="text-4xl">💻</div>
+                            <p class="font-semibold">Resource</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </main>
+
+        <footer class="text-center mt-12 pt-8 border-t border-gray-200">
+            <p class="text-gray-500">This application visualizes the standard operating procedure for incident response.</p>
+        </footer>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const brilliantBlues = {
+                primary: '#0E7490', 
+                secondary: '#0891B2', 
+                accent1: '#06B6D4', 
+                accent2: '#22D3EE', 
+                accent3: '#67E8F9',
+                text: '#374151'
+            };
+            
+            const tooltipPlugin = {
+                tooltip: {
+                    callbacks: {
+                        title: function(tooltipItems) {
+                            const item = tooltipItems[0];
+                            let label = item.chart.data.labels[item.dataIndex];
+                            if (Array.isArray(label)) {
+                              return label.join(' ');
+                            }
+                            return label;
+                        }
+                    }
+                }
+            };
+            
+            function wrapLabel(str, maxWidth) {
+                if (str.length <= maxWidth) return str;
+                const words = str.split(' ');
+                let lines = [];
+                let currentLine = words[0];
+                for (let i = 1; i < words.length; i++) {
+                    if ((currentLine + ' ' + words[i]).length > maxWidth) {
+                        lines.push(currentLine);
+                        currentLine = words[i];
+                    } else {
+                        currentLine += ' ' + words[i];
+                    }
+                }
+                lines.push(currentLine);
+                return lines;
+            }
+
+            // Shared Responsibility Chart (Doughnut)
+            const sharedResponsibilityCtx = document.getElementById('sharedResponsibilityChart').getContext('2d');
+            new Chart(sharedResponsibilityCtx, {
+                type: 'doughnut',
+                data: {
+                    labels: ['Customer Responsibility (Security IN the Cloud)', 'Provider Responsibility (Security OF the Cloud)'].map(l => wrapLabel(l, 25)),
+                    datasets: [{
+                        label: 'Responsibility',
+                        data: [60, 40],
+                        backgroundColor: [brilliantBlues.accent1, brilliantBlues.primary],
+                        borderColor: '#FFFFFF',
+                        borderWidth: 4
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: { position: 'bottom' },
+                        title: { display: false },
+                        ...tooltipPlugin
+                    },
+                    cutout: '60%'
+                }
+            });
+
+            // Tech Stack Chart (Horizontal Stacked Bar)
+            const techStackCtx = document.getElementById('techStackChart').getContext('2d');
+            new Chart(techStackCtx, {
+                type: 'bar',
+                data: {
+                    labels: ['Preparation', 'Detection & Analysis', 'Containment, Eradication & Recovery', 'Post-Incident Activity'].map(l => wrapLabel(l, 16)),
+                    datasets: [
+                        {
+                            label: 'SIEM & Cloud Security (Sentinel, Defender)',
+                            data: [25, 40, 20, 15],
+                            backgroundColor: brilliantBlues.primary,
+                        },
+                        {
+                            label: 'IAM & PAM (Nexus, CyberArk)',
+                            data: [30, 10, 25, 10],
+                            backgroundColor: brilliantBlues.secondary,
+                        },
+                        {
+                            label: 'Network & Data Security (Akamai, Aruba, Thales)',
+                            data: [30, 25, 35, 5],
+                            backgroundColor: brilliantBlues.accent1,
+                        },
+                        {
+                            label: 'Workflow & Automation (ServiceNow)',
+                            data: [15, 25, 20, 70],
+                            backgroundColor: brilliantBlues.accent2,
+                        }
+                    ]
+                },
+                options: {
+                    indexAxis: 'y',
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    scales: {
+                        x: {
+                            stacked: true,
+                            title: { display: true, text: 'Relative Contribution to IR Phase (%)' }
+                        },
+                        y: { stacked: true }
+                    },
+                    plugins: {
+                        legend: { position: 'top' },
+                        title: { display: true, text: 'Technology Contribution to Incident Response Phases', font: { size: 16 } },
+                        ...tooltipPlugin
+                    }
+                }
+            });
+        });
+    </script>
+</body>
+</html>
+
