@@ -1,0 +1,270 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NIS 2 & IR Framework</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #F0F4F8; /* Light Blue/Gray */
+            color: #1A365D; /* Dark Blue */
+        }
+        .phase-card {
+            background-color: #FFFFFF;
+            border: 1px solid #D1D8E0;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        .phase-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.05);
+        }
+        .ir-arrow {
+            font-size: 2.5rem;
+            color: #A2B9CD;
+            align-self: center;
+            margin: 1rem 0;
+        }
+        .chart-container {
+            position: relative;
+            width: 100%;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+            height: 300px;
+            max-height: 400px;
+        }
+        @media (min-width: 768px) {
+            .chart-container {
+                height: 350px;
+            }
+        }
+        .nav-link {
+            transition: color 0.3s ease, transform 0.3s ease;
+        }
+        .nav-link:hover {
+            color: #3182CE;
+            transform: scale(1.05);
+        }
+    </style>
+</head>
+<body class="antialiased">
+
+    <div class="container mx-auto p-4 md:p-8 max-w-5xl">
+
+        <header class="text-center mb-12">
+            <h1 class="text-4xl md:text-5xl font-bold text-[#2A65A4] mb-4">HPE SPAR-ICS Incident Response Flow</h1>
+            <p class="text-lg text-gray-600 max-w-3xl mx-auto">A detailed look at the foundational, analyst-driven workflow for managing security incidents.</p>
+        </header>
+        
+        <nav class="flex justify-center mb-10">
+            <a href="index.html" class="nav-link px-4 py-2 text-lg font-semibold text-[#2A65A4] border-b-2 border-transparent hover:border-[#2A65A4]">&larr; Return to NIS 2 Overview</a>
+        </nav>
+
+        <main class="flex flex-col items-center">
+            <!-- Phase 1 -->
+            <section id="phase1" class="w-full md:w-4/5 lg:w-3/4 mb-4">
+                <div class="phase-card rounded-xl shadow-md p-6 md:p-8">
+                    <div class="flex items-center mb-4">
+                        <div class="bg-[#A2B9CD] text-[#2A65A4] rounded-full h-10 w-10 flex items-center justify-center font-bold text-xl mr-4">1</div>
+                        <h3 class="text-2xl font-bold text-[#2A65A4]">Detection & Triage</h3>
+                    </div>
+                    <p class="text-gray-600 mb-6">This initial phase covers the automated detection of a potential security event and the analyst's manual assessment and transfer to the management platform.</p>
+                    <div class="bg-[#F0F4F8] rounded-lg p-4 border border-[#D1D8E0]">
+                        <h4 class="font-semibold text-[#2A65A4] mb-3">Workflow:</h4>
+                        <div class="flex flex-col sm:flex-row items-center justify-around text-center">
+                            <div class="p-2">
+                                <div class="text-3xl mb-1">🛡️</div>
+                                <p class="font-semibold">Azure Sentinel</p>
+                                <p class="text-sm text-gray-500">Incident Created</p>
+                            </div>
+                            <div class="text-2xl font-bold text-[#A2B9CD] mx-4 my-2 sm:my-0">&rarr;</div>
+                            <div class="p-2">
+                                <div class="text-3xl mb-1">🧑‍💻</div>
+                                <p class="font-semibold">Analyst</p>
+                                <p class="text-sm text-gray-500">Manual Triage & Creation</p>
+                            </div>
+                            <div class="text-2xl font-bold text-[#A2B9CD] mx-4 my-2 sm:my-0">&rarr;</div>
+                            <div class="p-2">
+                                <div class="text-3xl mb-1">🎫</div>
+                                <p class="font-semibold">ServiceNow SIR</p>
+                                <p class="text-sm text-gray-500">Ticket Generated</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+            <div class="ir-arrow">&darr;</div>
+
+            <!-- Phase 2 -->
+            <section id="phase2" class="w-full md:w-4/5 lg:w-3/4 mb-4">
+                <div class="phase-card rounded-xl shadow-md p-6 md:p-8">
+                    <div class="flex items-center mb-4">
+                        <div class="bg-[#A2B9CD] text-[#2A65A4] rounded-full h-10 w-10 flex items-center justify-center font-bold text-xl mr-4">2</div>
+                        <h3 class="text-2xl font-bold text-[#2A65A4]">Analysis & Investigation</h3>
+                    </div>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6 items-center">
+                        <div>
+                            <p class="text-gray-600 mb-4">The SOC analyst manually deepens their investigation using Azure Sentinel for forensics and ServiceNow for documentation, establishing the incident's scope and impact.</p>
+                            <ul class="list-disc list-inside space-y-2 text-gray-600">
+                                <li><strong class="text-[#2A65A4]">Technical Analysis:</strong> Use Sentinel's KQL queries and timeline view for deep forensic analysis on IaaS servers.</li>
+                                <li><strong class="text-[#2A65A4]">Centralized Documentation:</strong> All findings and notes are meticulously documented within the ServiceNow SIR ticket for a complete, auditable record.</li>
+                            </ul>
+                        </div>
+                        <div class="chart-container">
+                            <canvas id="investigationChart"></canvas>
+                        </div>
+                    </div>
+                </div>
+            </section>
+            <div class="ir-arrow">&darr;</div>
+
+            <!-- Phase 3 -->
+            <section id="phase3" class="w-full md:w-4/5 lg:w-3/4 mb-4">
+                <div class="phase-card rounded-xl shadow-md p-6 md:p-8">
+                    <div class="flex items-center mb-4">
+                        <div class="bg-[#A2B9CD] text-[#2A65A4] rounded-full h-10 w-10 flex items-center justify-center font-bold text-xl mr-4">3</div>
+                        <h3 class="text-2xl font-bold text-[#2A65A4]">Containment, Eradication & Recovery</h3>
+                    </div>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6 items-center">
+                         <div class="chart-container">
+                            <canvas id="containmentChart"></canvas>
+                        </div>
+                        <div>
+                            <p class="text-gray-600 mb-4">The analyst manually takes decisive action to contain the threat and restore affected systems. Every action is logged in ServiceNow to maintain an audit trail.</p>
+                            <ul class="list-disc list-inside space-y-2 text-gray-600">
+                                <li><strong class="text-[#2A65A4]">Analyst-Driven Actions:</strong> Manually quarantine a VM in Azure, disable a user account in Microsoft Entra ID, or block a malicious IP.</li>
+                                <li><strong class="text-[#2A65A4]">Managed Recovery:</strong> Restore systems from clean backups and patch vulnerabilities, with each step tracked as a task in the SIR ticket.</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </section>
+            <div class="ir-arrow">&darr;</div>
+
+            <!-- Phase 4 -->
+            <section id="phase4" class="w-full md:w-4/5 lg:w-3/4">
+                <div class="phase-card rounded-xl shadow-md p-6 md:p-8">
+                    <div class="flex items-center mb-4">
+                        <div class="bg-[#A2B9CD] text-[#2A65A4] rounded-full h-10 w-10 flex items-center justify-center font-bold text-xl mr-4">4</div>
+                        <h3 class="text-2xl font-bold text-[#2A65A4]">Post-Incident Activity & Closure</h3>
+                    </div>
+                    <p class="text-gray-600 mb-6">The incident is formally closed, and the team reviews the process to learn from the experience and ensure NIS 2 compliance.</p>
+                     <div class="bg-[#F0F4F8] rounded-lg p-4 border border-[#D1D8E0]">
+                        <h4 class="font-semibold text-[#2A65A4] mb-3">Continuous Improvement & Compliance:</h4>
+                        <p class="text-gray-600">A post-mortem report is generated from ServiceNow to identify weaknesses. This feedback is used by the SOC team to manually refine Sentinel rules and security policies to prevent future incidents, fulfilling the NIS 2 compliance loop.</p>
+                    </div>
+                </div>
+            </section>
+        </main>
+
+        <footer class="text-center mt-12 pt-8 border-t border-gray-200">
+            <p class="text-gray-500">This application visualizes the standard operating procedure for incident response.</p>
+        </footer>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            // Updated color palette to match index.html
+            const brilliantBlues = {
+                background: '#F0F4F8',
+                primary: '#2A65A4',
+                secondary: '#3182CE',
+                accent1: '#A2B9CD',
+                accent2: '#5A8AC9',
+            };
+
+            const tooltipPlugin = {
+                tooltip: {
+                    callbacks: {
+                        title: function(tooltipItems) {
+                            const item = tooltipItems[0];
+                            let label = item.chart.data.labels[item.dataIndex];
+                            if (Array.isArray(label)) {
+                              return label.join(' ');
+                            }
+                            return label;
+                        }
+                    }
+                }
+            };
+            
+            function wrapLabel(str, maxWidth) {
+                if (str.length <= maxWidth) return str;
+                const words = str.split(' ');
+                let lines = [];
+                let currentLine = words[0];
+                for (let i = 1; i < words.length; i++) {
+                    if ((currentLine + ' ' + words[i]).length > maxWidth) {
+                        lines.push(currentLine);
+                        currentLine = words[i];
+                    } else {
+                        currentLine += ' ' + words[i];
+                    }
+                }
+                lines.push(currentLine);
+                return lines;
+            }
+
+            // Investigation Chart (Donut)
+            const investigationCtx = document.getElementById('investigationChart').getContext('2d');
+            new Chart(investigationCtx, {
+                type: 'doughnut',
+                data: {
+                    labels: ['KQL Forensics', 'Graph Analysis', 'Documentation'],
+                    datasets: [{
+                        data: [45, 30, 25],
+                        backgroundColor: [brilliantBlues.primary, brilliantBlues.accent2, brilliantBlues.secondary],
+                        borderColor: '#FFFFFF',
+                        borderWidth: 4
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: { position: 'bottom' },
+                        title: { display: true, text: 'Analyst Investigation Activities' },
+                        ...tooltipPlugin
+                    },
+                    cutout: '60%'
+                }
+            });
+
+            // Containment Chart (Horizontal Bar)
+            const containmentCtx = document.getElementById('containmentChart').getContext('2d');
+            new Chart(containmentCtx, {
+                type: 'bar',
+                data: {
+                    labels: ['Quarantine VM', 'Disable User Account', 'Block Malicious IP'].map(l => wrapLabel(l, 16)),
+                    datasets: [{
+                        label: 'Frequency of Action',
+                        data: [65, 45, 25],
+                        backgroundColor: [brilliantBlues.primary, brilliantBlues.accent2, brilliantBlues.secondary],
+                        borderColor: [brilliantBlues.primary, brilliantBlues.accent2, brilliantBlues.secondary],
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    indexAxis: 'y',
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: { display: false },
+                        title: { display: true, text: 'Common Containment Actions' },
+                         ...tooltipPlugin
+                    },
+                    scales: {
+                        x: { beginAtZero: true }
+                    }
+                }
+            });
+        });
+    </script>
+</body>
+</html>
